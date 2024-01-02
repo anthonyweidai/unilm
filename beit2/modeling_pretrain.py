@@ -266,7 +266,8 @@ class VisionTransformerForMaskedImageModeling(nn.Module):
             else:
                 # return attention of the last block
                 return blk(x, rel_pos_bias=rel_pos_bias, return_attention=True)
-                
+
+              
 class VisionTransformerForMaskedImageModelingCLS(VisionTransformerForMaskedImageModeling):
     def __init__(self, img_size=224, patch_size=16, in_chans=3, vocab_size=8192, embed_dim=768, depth=12,
                  num_heads=12, mlp_ratio=4., qkv_bias=True, qk_scale=None, drop_rate=0., attn_drop_rate=0.,
@@ -402,6 +403,26 @@ def beit_base_patch16_192_8k_vocab(pretrained=False, **kwargs):
         vocab_size = 8192
     model = VisionTransformerForMaskedImageModeling(
         img_size=192, patch_size=16, embed_dim=768, depth=12, num_heads=12, mlp_ratio=4, qkv_bias=True,
+        norm_layer=partial(nn.LayerNorm, eps=1e-6), vocab_size=vocab_size, **kwargs)
+    model.default_cfg = _cfg()
+    if pretrained:
+        checkpoint = torch.load(
+            kwargs["init_ckpt"], map_location="cpu"
+        )
+        model.load_state_dict(checkpoint["model"])
+    return model
+
+@register_model
+def beit_base_patch8_96_8k_vocab(pretrained=False, **kwargs):
+    if "num_classes" in kwargs:
+        _ = kwargs.pop("num_classes")
+    if 'vocab_size' in kwargs:
+        vocab_size = kwargs['vocab_size']
+        _ = kwargs.pop("vocab_size")
+    else:
+        vocab_size = 8192
+    model = VisionTransformerForMaskedImageModeling(
+        img_size=96, patch_size=8, embed_dim=768, depth=12, num_heads=12, mlp_ratio=4, qkv_bias=True,
         norm_layer=partial(nn.LayerNorm, eps=1e-6), vocab_size=vocab_size, **kwargs)
     model.default_cfg = _cfg()
     if pretrained:
