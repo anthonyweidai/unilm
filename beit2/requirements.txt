@@ -11,3 +11,5 @@ einops
 tensorboardX
 # deepspeed
 scipy
+ftfy
+regex

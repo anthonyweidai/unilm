@@ -26,8 +26,8 @@ from pathlib import Path
 import argparse
 
 import torch
+from torch import inf
 import torch.distributed as dist
-from torch._six import inf
 
 from tensorboardX import SummaryWriter
 
