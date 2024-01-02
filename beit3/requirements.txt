@@ -1,6 +1,6 @@
 torch
 torchvision
-timm==0.4.12
+timm
 Pillow
 blobfile
 mypy
@@ -14,9 +14,9 @@ ftfy
 opencv-python
 sentencepiece
 pyarrow
-torchmetrics==0.7.3
+torchmetrics
 transformers
-deepspeed==0.4.0
+# deepspeed
 pycocotools
 pycocoevalcap
-torchscale==0.2.0
+torchscale
