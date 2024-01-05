@@ -122,6 +122,10 @@ def get_args():
     parser.add_argument('--data_set', default='image_folder',  type=str, help='dataset path')
 
     parser.add_argument('--imagenet_default_mean_and_std', default=False, action='store_true')
+    parser.add_argument('--img_mean', type=float, default=0.5,
+                        help='mean value of datasets')
+    parser.add_argument('--img_std', type=float, default=0.5, 
+                        help='std value of datasets')
 
     parser.add_argument('--output_dir', default='',
                         help='path where to save, empty for no saving')

@@ -9,15 +9,12 @@
 # https://github.com/facebookresearch/deit/
 # https://github.com/facebookresearch/dino
 # --------------------------------------------------------'
-import argparse
 import os
 import torch
-import random
 
 from torchvision import datasets, transforms
 
-from timm.data.constants import \
-    IMAGENET_DEFAULT_MEAN, IMAGENET_DEFAULT_STD, IMAGENET_INCEPTION_MEAN, IMAGENET_INCEPTION_STD
+from timm.data.constants import IMAGENET_INCEPTION_MEAN, IMAGENET_INCEPTION_STD
 from transforms import RandomResizedCropAndInterpolationWithTwoPic, _pil_interp
 from timm.data import create_transform, ImageDataset 
 
@@ -28,8 +25,8 @@ from dataset_folder import ImageFolder
 class DataAugmentationForBEiT(object):
     def __init__(self, args):
         imagenet_default_mean_and_std = args.imagenet_default_mean_and_std
-        mean = IMAGENET_INCEPTION_MEAN if not imagenet_default_mean_and_std else IMAGENET_DEFAULT_MEAN
-        std = IMAGENET_INCEPTION_STD if not imagenet_default_mean_and_std else IMAGENET_DEFAULT_STD
+        mean = IMAGENET_INCEPTION_MEAN if not imagenet_default_mean_and_std else args.img_mean
+        std = IMAGENET_INCEPTION_STD if not imagenet_default_mean_and_std else args.img_std
 
         # oringinal beit data augmentation
         self.common_transform = transforms.Compose([
@@ -159,8 +156,8 @@ def build_dataset(is_train, args):
 def build_transform(is_train, args):
     resize_im = args.input_size > 32
     imagenet_default_mean_and_std = args.imagenet_default_mean_and_std
-    mean = IMAGENET_INCEPTION_MEAN if not imagenet_default_mean_and_std else IMAGENET_DEFAULT_MEAN
-    std = IMAGENET_INCEPTION_STD if not imagenet_default_mean_and_std else IMAGENET_DEFAULT_STD
+    mean = IMAGENET_INCEPTION_MEAN if not imagenet_default_mean_and_std else args.img_mean
+    std = IMAGENET_INCEPTION_STD if not imagenet_default_mean_and_std else args.img_std
 
     if is_train:
         # this should always dispatch to transforms_imagenet_train
